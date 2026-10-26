@@ -14,23 +14,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-pdf:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - uses: ./.github/actions/setup-typst
-      
+
       - name: Compile PDF
         run: typst compile main.typ resume.pdf
-        
+
+      - name: Create redirect index.html
+        run: |
+          cat > index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="ru">
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0; url=resume.pdf">
+            <title>Резюме — Александр Бучнев</title>
+            <style>
+              body { font-family: sans-serif; text-align: center; padding: 50px; }
+              a { color: #2563eb; }
+            </style>
+          </head>
+          <body>
+            <p>Открываю резюме... Если не открылось, <a href="resume.pdf">нажмите здесь</a>.</p>
+          </body>
+          </html>
+          EOF
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        
+
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-          
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
