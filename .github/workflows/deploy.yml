@@ -32,7 +32,7 @@ jobs:
   build-html:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/setup-typst-env
+      - uses: ./.github/actions/setup-typst
       
       - name: Compile HTML
         run: typst compile main.typ --features html --format html index.html
