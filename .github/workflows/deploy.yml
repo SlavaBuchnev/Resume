@@ -17,8 +17,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-typst
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
 
       - name: Create clean build directory
         run: |
