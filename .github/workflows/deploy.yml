@@ -18,6 +18,8 @@ jobs:
   build-pdf:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      
       - uses: ./.github/actions/setup-typst
       
       - name: Compile PDF
@@ -32,6 +34,8 @@ jobs:
   build-html:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      
       - uses: ./.github/actions/setup-typst
       
       - name: Compile HTML
