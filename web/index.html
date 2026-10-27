@@ -1,18 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Resumes</title>
+    <title>Resume Platform | Buchnev</title>
+    
+    <!-- Open Graph для красивого превью в мессенджерах -->
+    <meta property="og:title" content="Платформа резюме">
+    <meta property="og:description" content="Современные PDF-резюме на Typst. Выберите язык и шаблон.">
+    <meta property="og:type" content="website">
+    
+    <!-- Современный шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Available Resumes</h1>
-        <div id="resumes-container">
-            <!-- Сюда JavaScript вставит карточки пользователей -->
+    <div class="background-decor"></div>
+
+    <main class="container">
+        <header class="hero">
+            <h1>Resume Platform</h1>
+            <p>Автоматизированные резюме на Typst. Выберите пользователя, язык и шаблон.</p>
+        </header>
+
+        <div id="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Загрузка данных...</p>
         </div>
-    </div>
+
+        <div id="resumes-container" class="grid"></div>
+        
+        <!-- Сообщение об ошибке (скрыто по умолчанию) -->
+        <div id="error-message" class="error-state" style="display: none;">
+            <p>⚠️ Не удалось загрузить список резюме. Проверьте наличие <code>resumes.json</code>.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>Powered by <a href="https://typst.app" target="_blank">Typst</a> & GitHub Actions</p>
+    </footer>
+
     <script src="app.js"></script>
 </body>
 </html>
