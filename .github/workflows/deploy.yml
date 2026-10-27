@@ -28,14 +28,13 @@ jobs:
         uses: typst-community/setup-typst@v3
 
       - name: Compile PDF for ${{ matrix.lang }}
-        run: |
-          typst compile lang/${{ matrix.lang }}.typ _site/resume_${{ matrix.lang }}.pdf --root .
+        run: typst compile lang/${{ matrix.lang }}.typ resume_${{ matrix.lang }}.pdf --root .
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
         with:
           name: pdf-${{ matrix.lang }}
-          path: _site/resume_${{ matrix.lang }}.pdf
+          path: resume_${{ matrix.lang }}.pdf
 
   deploy:
     needs: build-pdfs
