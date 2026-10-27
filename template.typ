@@ -1,6 +1,7 @@
 #import "settings.typ": *
 
 #let resume(
+  lang: "",
   name: "",
   title: "",
   contacts: (),
@@ -9,6 +10,8 @@
   experience: (), projects: (), education: (), 
   portfolio: (), awards: (), skills: (),
 ) = {
+  set text(lang: lang)
+
   grid(
     columns: (auto, 1fr),
     align: (left + bottom, right + bottom),

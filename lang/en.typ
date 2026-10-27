@@ -2,12 +2,13 @@
 #import "../settings.typ": clink
 
 #resume(
+  lang: "en",
   name: "Vyacheslav Buchnev",
   title: "BACKEND DEVELOPER",
   contacts: [
     +7(950)128-86-38 \
     slavabuchnev5\@gmail.com \
-    tg: \@SlavaBuchnev
+    tg:~\@SlavaBuchnev
   ],
   exp_title: "EXPERIENCE",
   experience: [

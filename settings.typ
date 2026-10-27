@@ -3,7 +3,7 @@
   margin: (left: 0.5cm, right: 1cm, top: 1.5cm, bottom: 1.5cm),
 )
 
-#set text(font: "Liberation Serif", size: 10pt, lang: "ru")
+#set text(font: "Liberation Serif", size: 10pt)
 #set par(justify: false, leading: 0.55em)
 
 // Функция для синих подчеркнутых ссылок
