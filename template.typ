@@ -1,7 +1,7 @@
 #import "settings.typ": *
 
 #let resume(
-  lang: "",
+  lang: "en", // Язык по умолчанию
   name: "",
   title: "",
   contacts: (),
@@ -10,8 +10,10 @@
   experience: (), projects: (), education: (), 
   portfolio: (), awards: (), skills: (),
 ) = {
+  show: apply-styles
   set text(lang: lang)
 
+  // ===== ШАПКА =====
   grid(
     columns: (auto, 1fr),
     align: (left + bottom, right + bottom),
@@ -21,7 +23,7 @@
   )
   
   v(0.4em)
-  text(size: 16pt, weight: "bold")[#title] // Убрали #
+  text(size: 16pt, weight: "bold")[#title]
   v(1em)
 
   grid(

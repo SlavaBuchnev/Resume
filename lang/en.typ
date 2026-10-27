@@ -56,11 +56,11 @@
   awards_title: "AWARDS",
   awards: [
     #list(
-      [*T-Bank Scholarship*, \ Winner 2025],
-      [*ICPC Semifinalist*, \ participant 2024, participant 2023, participant 2022],
-      [*ICPC Quarterfinalist*, \ winner 2024 (4 out of 41), winner 2023 (4 out of 39), winner 2022 (10 out of 50)],
-      [*RuCode Summer Contest*, \ winner 2023 (33 out of 231)],
-      [*RuCode Championship*, \ winner 2022 (18 out of 216)],
+      [*T-Bank Scholarship*,\ winner 2025],
+      [*ICPC Semifinalist*,\ participant 2024,\ participant 2023,\ participant 2022],
+      [*ICPC Quarterfinalist*,\ winner 2024 (4 out of 41),\ winner 2023 (4 out of 39),\ winner 2022 (10 out of 50)],
+      [*RuCode Summer Contest*,\ winner 2023 (33 out of 231)],
+      [*RuCode Championship*,\ winner 2022 (18 out of 216)],
     )
   ],
   skills_title: "SKILLS",
