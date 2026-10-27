@@ -29,7 +29,7 @@ jobs:
 
       - name: Compile PDF for ${{ matrix.lang }}
         run: |
-          typst compile lang/${{ matrix.lang }}.typ _site/resume_${{ matrix.lang }}.pdf --root
+          typst compile lang/${{ matrix.lang }}.typ _site/resume_${{ matrix.lang }}.pdf --root .
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4

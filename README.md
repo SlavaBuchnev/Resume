@@ -15,10 +15,10 @@
 ## 🛠️ Локальная сборка
 ```bash
 # Собрать русскую версию
-typst compile lang/ru.typ resume_ru.pdf --root
+typst compile lang/ru.typ resume_ru.pdf --root .
 
 # Собрать английскую версию
-typst compile lang/en.typ resume_en.pdf --root
+typst compile lang/en.typ resume_en.pdf --root .
 ```
 
 *Для живого предпросмотра в VS Code используйте расширение **Tinymist Typst** (`Ctrl+K V`).*
