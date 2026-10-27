@@ -1,34 +1,29 @@
+# Резюме
 
-# Резюме на Typst
-
-Исходный код моего резюме, свёрстанный на [Typst](https://typst.app/). Проект настроен на автоматическую сборку PDF-версии и публикацию веб-версии (HTML) на GitHub Pages.
+Исходный код моего резюме на [Typst](https://typst.app/). Поддерживает несколько языков и автоматически публикует PDF-версии на GitHub Pages.
 
 ## 🚀 Ссылки
-* **Сайт (HTML):** `https://Slavabuchev.github.io/Resume/`
-* **Скачать PDF:** Доступен в разделе **Actions** -> выберите последний успешный запуск -> **Artifacts** -> `resume-pdf`.
+* **Сайт-визитка:** [Slavabuchev.github.io/Resume](https://Slavabuchev.github.io/Resume/)
+* **Резюме (PDF):** [🇷🇺 Русский](https://Slavabuchev.github.io/Resume/resume_ru.pdf) | [🇬🇧 English](https://Slavabuchev.github.io/Resume/resume_en.pdf)
 
-## 📂 Структура проекта
-* `main.typ` — основной файл с текстом резюме.
-* `settings.typ` — настройки стилей (шрифты, цвета, отступы, заголовки).
-* `.github/workflows/deploy.yml` — CI/CD пайплайн для сборки PDF и деплоя HTML.
+## 📂 Структура
+* `template.typ` — макет (верстка и сетка).
+* `settings.typ` — стили (шрифты, цвета).
+* `lang/` — тексты резюме на разных языках.
+* `web/` — сайт-визитка (HTML/CSS) для GitHub Pages.
 
 ## 🛠️ Локальная сборка
-Для сборки необходим установленный [Typst](https://github.com/typst/typst).
-
-**Собрать PDF:**
 ```bash
-typst compile main.typ resume.pdf
+# Собрать русскую версию
+typst compile lang/ru.typ resume_ru.pdf
+
+# Собрать английскую версию
+typst compile lang/en.typ resume_en.pdf
 ```
 
-**Собрать HTML:**
-```bash
-typst compile main.typ --features html --format html index.html
-```
+*Для живого предпросмотра в VS Code используйте расширение **Tinymist Typst** (`Ctrl+K V`).*
 
-*Совет: для удобной работы используйте VS Code с расширением **Tinymist Typst** (живой предпросмотр по `Ctrl+K V`).*
+## ⚙️ CI/CD
+При пуше в `main` GitHub Actions параллельно собирает PDF для всех языков из `matrix`, добавляет файлы из папки `web/` и деплоит результат на GitHub Pages. 
 
-## ⚙️ Автоматизация (GitHub Actions)
-При каждом пуше в ветку `main` запускается workflow, который:
-1. Параллельно компилирует `resume.pdf` и `index.html`.
-2. Загружает PDF в артефакты GitHub Actions.
-3. Публикует HTML-версию на GitHub Pages.
+*Чтобы добавить новый язык, создайте файл в `lang/`, добавьте его в `matrix` внутри `deploy.yml` и создайте кнопку в `web/index.html`.*

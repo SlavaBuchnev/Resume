@@ -1,4 +1,5 @@
-name: Build Resume PDF & Deploy to Pages
+name: Build Resume
+
 on:
   push:
     branches: [main]
@@ -14,8 +15,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build-pdfs:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lang: [ru, en]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,13 +27,38 @@ jobs:
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
 
-      - name: Create clean build directory
+      - name: Compile PDF for ${{ matrix.lang }}
+        run: |
+          typst compile lang/${{ matrix.lang }}.typ _site/resume_${{ matrix.lang }}.pdf
+
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-${{ matrix.lang }}
+          path: _site/resume_${{ matrix.lang }}.pdf
+
+  deploy:
+    needs: build-pdfs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clean and create build directory
         run: |
           rm -rf _site
           mkdir -p _site
 
-      - name: Compile PDF
-        run: typst compile main.typ _site/index.pdf
+      - name: Download all PDFs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pdf-*
+          path: _site
+          merge-multiple: true
+
+      - name: Copy Website Files
+        run: |
+          cp -r web/* _site/
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3

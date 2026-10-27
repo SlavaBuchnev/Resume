@@ -1,41 +1,16 @@
-// main.typ
-#import "settings.typ": *
+#import "../template.typ": resume
+#import "../settings.typ": clink
 
-// ===== ШАПКА =====
-#grid(
-  columns: (auto, 1fr),
-  align: (left + bottom, right + bottom),
-  column-gutter: 1.5em,
-  [
-    #text(size: 40pt, weight: "bold")[Бучнев Вячеслав]
+#resume(
+  name: "Бучнев Вячеслав",
+  title: "BACKEND - РАЗРАБОТЧИК",
+  contacts: [
+    +7(950)128-86-38 \
+    slavabuchnev5\@gmail.com \
+    tg: \@SlavaBuchnev
   ],
-  [
-    #align(left)[
-      #text(size: 12pt)[
-        *+7(950)128-86-38 \
-        slavabuchnev5\@gmail.com \
-        tg: \@SlavaBuchnev*
-      ]
-    ]
-  ]
-)
-
-#v(0.4em) 
-
-#text(size: 16pt, weight: "bold")[BACKEND - РАЗРАБОТЧИК]
-
-#v(1em)
-
-// ===== ОСНОВНАЯ СЕТКА (2 колонки) =====
-#grid(
-  columns: (65%, 35%),
-  gutter: 2em,
-  
-  // ---------- ЛЕВАЯ КОЛОНКА ----------
-  [
-    #section-heading("ОПЫТ РАБОТЫ")
-    
-    // Даты просто перенесены вниз
+  exp_title: "ОПЫТ РАБОТЫ",
+  experience: [
     *Т-Банк BACKEND-РАЗРАБОТЧИК, Т-ID* \
     _май 2025 – настоящее время_
     
@@ -44,8 +19,9 @@
       [Выполнил миграцию данных с Aerospike на PostgreSQL, что повысило надежность хранения и обеспечило консистентность данных.],
       [Провел отладку и исправление ошибок, улучшив стабильность приложения.],
     )
-
-    #section-heading("ПРОЕКТЫ")
+  ],
+  proj_title: "ПРОЕКТЫ",
+  projects: [
     *Telegram-bot - Учебный проект (Python)*
     #list(
       [Проектирование архитектуры с использованием практик на Python],
@@ -55,9 +31,9 @@
     )
     Репозиторий: \
     #clink("https://github.com/seregabalyuk/TelegramManagerBoardGames")[https://github.com/seregabalyuk/TelegramManagerBoardGames]
-
-    #section-heading("ОБРАЗОВАНИЕ")
-    
+  ],
+  edu_title: "ОБРАЗОВАНИЕ",
+  education: [
     *Иркутский Государственный Университет* \
     _сентябрь 2022 – июль 2026_ \
     прикладная математика и информатика, Бакалавриат
@@ -72,15 +48,12 @@
     _март 2024_ \
     Тренировки по алгоритмам 5.0
   ],
-
-  // ---------- ПРАВАЯ КОЛОНКА ----------
-  [
-    #section-heading("ПОРТФОЛИО")
+  port_title: "ПОРТФОЛИО",
+  portfolio: [
     #clink("https://github.com/SlavaBuchnev")[https://github.com/SlavaBuchnev]
-    
-    #v(1em) 
-  
-    #section-heading("НАГРАДЫ")
+  ],
+  awards_title: "НАГРАДЫ",
+  awards: [
     #list(
       [*Стипендиат Т-Банка*, \ Победитель 2025],
       [*Полуфинал ICPC*, \ участник 2024, \ участник 2023, \ участник 2022],
@@ -88,10 +61,9 @@
       [*Летний Контест RuCode*, \ призер 2023 (33 из 231)],
       [*Чемпионат Rucode*, \ призер 2022 (18 из 216)],
     )
-    
-    #v(1em)
-
-    #section-heading("НАВЫКИ")
+  ],
+  skills_title: "НАВЫКИ",
+  skills: [
     #list(
       [*Scala:* zio, http4s, tapir, doobie],
       [*C++:* STL, Boost],
