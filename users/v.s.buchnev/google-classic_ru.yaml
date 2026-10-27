@@ -1,0 +1,76 @@
+lang: ru
+name: Бучнев Вячеслав
+title: BACKEND - РАЗРАБОТЧИК
+
+contacts:
+  - "+7(950)128-86-38"
+  - "slavabuchnev5@gmail.com"
+  - "tg: @SlavaBuchnev"
+
+exp_title: ОПЫТ РАБОТЫ
+experience:
+  - company: Т-Банк
+    role: BACKEND-РАЗРАБОТЧИК, Т-ID
+    date: май 2025 – настоящее время
+    points:
+      - Разработал высоконагруженное REST API для управления учетными записями пользователей для 1M+ пользователей.
+      - Выполнил миграцию данных с Aerospike на PostgreSQL, что повысило надежность хранения и обеспечило консистентность данных.
+      - Провел отладку и исправление ошибок, улучшив стабильность приложения.
+
+proj_title: ПРОЕКТЫ
+projects:
+  - name: Telegram-bot
+    type: Учебный проект (Python)
+    link: https://github.com/seregabalyuk/TelegramManagerBoardGames
+    points:
+      - Проектирование архитектуры с использованием практик на Python
+      - Проектирование Базы данных
+      - Реализация взаимодействия с БД (PostgreSQL)
+      - Настройка GitHub Actions
+
+edu_title: ОБРАЗОВАНИЕ
+education:
+  - institution: Иркутский Государственный Университет
+    date: сентябрь 2022 – июль 2026
+    degree: прикладная математика и информатика, Бакалавриат
+  - institution: Тинькофф образование
+    date: февраль 2024 – май 2024
+    degree: Алгоритмы и структуры данных
+  - institution: Яндекс алгоритмы
+    date: март 2024
+    degree: Тренировки по алгоритмам 5.0
+
+port_title: ПОРТФОЛИО
+portfolio: https://github.com/SlavaBuchnev
+
+awards_title: НАГРАДЫ
+awards:
+  - name: Стипендиат Т-Банка
+    details: Победитель 2025
+  - name: Полуфинал ICPC
+    details: |
+      участник 2024
+      участник 2023
+      участник 2022
+  - name: Четвертьфинал ICPC
+    details: |
+      призер 2024 (4 из 41)
+      призер 2023 (4 из 39)
+      призер 2022 (10 из 50)
+
+skills_title: НАВЫКИ
+skills:
+  - category: Scala
+    list: zio, http4s, tapir, doobie
+  - category: C++
+    list: STL, Boost
+  - category: Python
+    list: Numpy, Requests
+  - category: Git
+    list: ""
+  - category: SQL
+    list: PostgreSQL
+  - category: Linux
+    list: ""
+  - category: SOLID
+    list: ""
