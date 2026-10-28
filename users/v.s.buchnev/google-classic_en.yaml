@@ -1,0 +1,89 @@
+lang: en
+name: "Vyacheslav Buchnev"
+title: "BACKEND DEVELOPER"
+
+contacts:
+  - "+7(950)128-86-38"
+  - "slavabuchnev5@gmail.com"
+  - "tg: @SlavaBuchnev"
+
+sections:
+  left:
+    - title: "EXPERIENCE"
+      type: "experience"
+      data:
+        - company: "T-Bank"
+          role: "BACKEND DEVELOPER, T-ID"
+          date: "May 2025 – Present"
+          points:
+            - "Developed a high-load REST API for user account management serving 1M+ users."
+            - "Migrated data from Aerospike to PostgreSQL, improving storage reliability and ensuring data consistency."
+            - "Debugged and fixed bugs, improving application stability."
+
+    - title: "PROJECTS"
+      type: "projects"
+      data:
+        - name: "Telegram-bot"
+          type: "Educational Project (Python)"
+          link: "https://github.com/seregabalyuk/TelegramManagerBoardGames"
+          points:
+            - "Architecture design using Python best practices"
+            - "Database design"
+            - "Database integration (PostgreSQL)"
+            - "GitHub Actions setup"
+
+    - title: "EDUCATION"
+      type: "education"
+      data:
+        - institution: "Irkutsk State University"
+          date: "September 2022 – July 2026"
+          degree: "Applied Mathematics and Computer Science, Bachelor's degree"
+        - institution: "Tinkoff Education"
+          date: "February 2024 – May 2024"
+          degree: "Algorithms and Data Structures"
+        - institution: "Yandex Algorithms"
+          date: "March 2024"
+          degree: "Algorithm Training 5.0"
+
+  right:
+    - title: "PORTFOLIO"
+      type: "portfolio"
+      data: "https://github.com/SlavaBuchnev"
+
+    - title: "AWARDS"
+      type: "awards"
+      data:
+        - name: "T-Bank Scholarship"
+          details: "Winner 2025"
+        - name: "ICPC Semifinalist"
+          details: |
+            participant 2024
+            participant 2023 
+            participant 2022
+        - name: "ICPC Quarterfinalist"
+          details: |
+            winner 2024 (4 out of 41) 
+            winner 2023 (4 out of 39)
+            winner 2022 (10 out of 50)
+        - name: "RuCode Summer Contest"
+          details: "winner 2023 (33 out of 231)"
+        - name: "RuCode Championship"
+          details: "winner 2022 (18 out of 216)"
+
+    - title: "SKILLS"
+      type: "skills"
+      data:
+        - category: "Scala"
+          list: "zio, http4s, tapir, doobie"
+        - category: "C++"
+          list: "STL, Boost"
+        - category: "Python"
+          list: "Numpy, Requests"
+        - category: "Git"
+          list: ""
+        - category: "SQL"
+          list: "PostgreSQL"
+        - category: "Linux"
+          list: ""
+        - category: "SOLID"
+          list: ""
