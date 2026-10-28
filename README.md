@@ -2,7 +2,7 @@
 
 Платформа для создания и автоматической публикации PDF-резюме. Разделяет дизайн и контент, поддерживает нескольких пользователей, языки и шаблоны. Работает на чистом Python и Typst без установки сторонних библиотек.
 
-**Сайт-визитка:** [Slavabuchev.github.io/Resume](https://Slavabuchev.github.io/Resume/)
+**Сайт-визитка:** [Slavabuchev.github.io/Resume](https://slavabuchnev.github.io/Resume/)
 
 ## 📂 Структура проекта
 ```text
