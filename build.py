@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
-"""
-Build script for Typst resume platform.
-
-Usage:
-    python build.py build              # Собрать все резюме в _site/
-    python build.py serve              # Собрать и открыть на localhost:8000
-"""
 import argparse
 import json
 import os
 import shutil
 import subprocess
 import sys
+import http.server
+import socketserver
 from pathlib import Path
 
 ROOT = Path(__file__).parent.resolve()
@@ -22,7 +17,7 @@ SITE_DIR = ROOT / "_site"
 
 
 def find_resumes():
-    """Ищет все YAML-файлы в users/ и возвращает список словарей."""
+    """Ищет все YAML-файлы в users/."""
     resumes = []
     if not USERS_DIR.exists():
         return resumes
@@ -31,7 +26,7 @@ def find_resumes():
         if not user_dir.is_dir():
             continue
         for yaml_file in sorted(user_dir.glob("*.yaml")):
-            base = yaml_file.stem  # напр. "google-classic_ru"
+            base = yaml_file.stem
             if "_" not in base:
                 print(f"⚠️  {yaml_file}: имя должно быть {{template}}_{{lang}}.yaml")
                 continue
@@ -62,9 +57,11 @@ def compile_resume(resume, output_dir):
     ]
     print(f"📄 {resume['user']} / {resume['base']}")
     result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    
     if result.returncode != 0:
-        print(f"❌ Ошибка в {resume['base']}:")
-        print(result.stderr)
+        print(f"❌ Ошибка при сборке {resume['base']}:")
+        # Выводим понятную ошибку от Typst
+        print(result.stderr.strip())
         return False
     return True
 
@@ -116,30 +113,35 @@ def build():
     if ok:
         print(f"\n✅ Готово: {SITE_DIR}/")
     else:
-        print("\n⚠️  Сборка завершена с ошибками. Исправьте их перед пушем.")
+        print("\n⚠️  Сборка завершена с ошибками. Исправьте YAML-файлы.")
         sys.exit(1)
 
 
 def serve():
-    """Запускает HTTP-сервер на localhost:8000 для _site/."""
-    import http.server
-    import socketserver
-
+    """Запускает HTTP-сервер на localhost:8000."""
     os.chdir(SITE_DIR)
     handler = http.server.SimpleHTTPRequestHandler
     with socketserver.TCPServer(("", 8000), handler) as httpd:
-        print("🌐 http://localhost:8000  (Ctrl+C чтобы остановить)")
+        print("🌐 Сервер запущен: http://localhost:8000 (Ctrl+C чтобы остановить)")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
             print("\n👋 Сервер остановлен")
 
+
+def get_dir_state():
+    """Возвращает словарь с временем модификации файлов для отслеживания изменений."""
+    state = {}
+    for folder in [USERS_DIR, TEMPLATES_DIR, WEB_DIR]:
+        if folder.exists():
+            for p in folder.rglob("*"):
+                if p.is_file():
+                    state[p] = p.stat().st_mtime
+    return state
+
+
 def main():
-    parser = argparse.ArgumentParser(
-        description="Build tool для платформы резюме на Typst",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=__doc__,
-    )
+    parser = argparse.ArgumentParser(description="Build tool для платформы резюме на Typst")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("build", help="Собрать всё в _site/")
     sub.add_parser("serve", help="Собрать и открыть на localhost:8000")
