@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 import argparse
 import json
-import os
 import shutil
 import subprocess
 import sys
-import http.server
-import socketserver
 from pathlib import Path
 
 ROOT = Path(__file__).parent.resolve()
 USERS_DIR = ROOT / "users"
-TEMPLATES_DIR = ROOT / "templates"
 WEB_DIR = ROOT / "web"
 SITE_DIR = ROOT / "_site"
 
 
 def find_resumes():
     """Ищет все YAML-файлы в users/."""
-    resumes = []
     if not USERS_DIR.exists():
-        return resumes
-        
+        return []
+    resumes = []
     for user_dir in sorted(USERS_DIR.iterdir()):
         if not user_dir.is_dir():
             continue
@@ -57,10 +52,9 @@ def compile_resume(resume, output_dir):
     ]
     print(f"📄 {resume['user']} / {resume['base']}")
     result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
-    
+
     if result.returncode != 0:
         print(f"❌ Ошибка при сборке {resume['base']}:")
-        # Выводим понятную ошибку от Typst
         print(result.stderr.strip())
         return False
     return True
@@ -91,23 +85,35 @@ def copy_web(output_dir):
     print("🌐 Скопированы файлы сайта")
 
 
-def build():
-    """Полная сборка: PDF + JSON + web."""
+def build(filters=None):
+    """Сборка. Если filters задан — собираем только указанные YAML."""
     if SITE_DIR.exists():
         shutil.rmtree(SITE_DIR)
     SITE_DIR.mkdir(parents=True)
 
-    resumes = find_resumes()
-    if not resumes:
+    all_resumes = find_resumes()
+    if not all_resumes:
         print("⚠️  Не найдено ни одного резюме в users/")
         sys.exit(1)
 
+    if filters:
+        # Нормализуем пути (могут прийти как ./users/x.yaml или users/x.yaml)
+        filter_set = {Path(f).as_posix().lstrip("./") for f in filters}
+        to_compile = [r for r in all_resumes if r["yaml_path"] in filter_set]
+        print(f"🔍 Фильтр: собираем {len(to_compile)} из {len(all_resumes)}")
+        if not to_compile:
+            print("⚠️  Ни один файл не попал под фильтр. Проверьте пути.")
+            sys.exit(1)
+    else:
+        to_compile = all_resumes
+
     ok = True
-    for r in resumes:
+    for r in to_compile:
         if not compile_resume(r, SITE_DIR):
             ok = False
 
-    generate_json(resumes, SITE_DIR)
+    # JSON всегда для всех, чтобы сайт показывал полный список
+    generate_json(all_resumes, SITE_DIR)
     copy_web(SITE_DIR)
 
     if ok:
@@ -117,42 +123,17 @@ def build():
         sys.exit(1)
 
 
-def serve():
-    """Запускает HTTP-сервер на localhost:8000."""
-    os.chdir(SITE_DIR)
-    handler = http.server.SimpleHTTPRequestHandler
-    with socketserver.TCPServer(("", 8000), handler) as httpd:
-        print("🌐 Сервер запущен: http://localhost:8000 (Ctrl+C чтобы остановить)")
-        try:
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            print("\n👋 Сервер остановлен")
-
-
-def get_dir_state():
-    """Возвращает словарь с временем модификации файлов для отслеживания изменений."""
-    state = {}
-    for folder in [USERS_DIR, TEMPLATES_DIR, WEB_DIR]:
-        if folder.exists():
-            for p in folder.rglob("*"):
-                if p.is_file():
-                    state[p] = p.stat().st_mtime
-    return state
-
-
 def main():
     parser = argparse.ArgumentParser(description="Build tool для платформы резюме на Typst")
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("build", help="Собрать всё в _site/")
-    sub.add_parser("serve", help="Собрать и открыть на localhost:8000")
+
+    p_build = sub.add_parser("build", help="Собрать резюме в _site/")
+    p_build.add_argument("--filter", nargs="+", help="Список YAML-файлов для сборки")
 
     args = parser.parse_args()
 
     if args.command == "build":
-        build()
-    elif args.command == "serve":
-        build()
-        serve()
+        build(args.filter)
 
 
 if __name__ == "__main__":

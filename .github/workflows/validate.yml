@@ -4,15 +4,69 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
 
-      - name: Build all resumes (Validation)
-        run: python build.py build
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files_yaml: |
+            typ:
+              - '**/*.typ'
+              - 'build.py'
+            yaml:
+              - 'users/**/*.yaml'
+
+      - name: Build resumes
+        run: |
+          if [[ "${{ steps.changed-files.outputs.typ_any_changed }}" == "true" ]]; then
+            echo "🔧 Изменены файлы шаблонов или скрипт сборки (.typ / build.py). Пересобираем ВСЁ."
+            python build.py build
+          elif [[ "${{ steps.changed-files.outputs.yaml_any_changed }}" == "true" ]]; then
+            echo "📄 Изменены только YAML-файлы. Собираем только их."
+            python build.py build --filter ${{ steps.changed-files.outputs.yaml_all_changed_files }}
+          else
+            echo "ℹ️ Значимых файлов (yaml/typ) не изменено. Сборка не требуется."
+          fi
+
+      - name: Upload PDFs for review
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-pdfs
+          path: '_site/*/*.pdf'
+          
+      - name: Comment on PR
+        if: success()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pdf-preview
+          message: |
+            ✅ **Сборка прошла успешно!**
+            
+            🔗 [Скачать собранные PDF-файлы](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            *(Если менялись YAML-файлы, здесь только они. Если менялись шаблоны — тут все PDF).*
+            
+      - name: Comment on PR with error
+        if: failure()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pdf-preview
+          message: |
+            ❌ **Ошибка при сборке!**
+            Проверьте логи: [Перейти к логам](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
