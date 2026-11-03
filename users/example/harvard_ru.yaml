@@ -1,0 +1,94 @@
+lang: ru
+name: "Иван Примеров"
+title: "BACKEND-РАЗРАБОТЧИК"
+
+contacts:
+  - "+7(999)000-00-00"
+  - "example@example.com"
+  - "github.com/example"
+  - "Москва"
+
+sections:
+  center:
+    - title: "ОБО МНЕ"
+      type: "text"
+      data: "Backend-разработчик с опытом проектирования высоконагруженных систем (100K+ RPS). Интересуюсь распределёнными системами, алгоритмами и оптимизацией баз данных. Открыт к предложениям на позиции Senior/Lead Backend."
+
+    - title: "ОБРАЗОВАНИЕ"
+      type: "education"
+      data:
+        - institution: "МГУ им. М.В. Ломоносова"
+          date: "сентябрь 2020 – июль 2024"
+          degree: "Прикладная математика и информатика, Бакалавриат (красный диплом)"
+        - institution: "Курсы Яндекса"
+          date: "февраль 2023 – май 2023"
+          degree: "Алгоритмы и структуры данных"
+
+    - title: "ОПЫТ РАБОТЫ"
+      type: "experience"
+      data:
+        - company: "ООО Ромашка"
+          role: "Backend-разработчик"
+          date: "январь 2023 – настоящее время"
+          points:
+            - "Разработал микросервисы на Go для обработки 100K RPS."
+            - "Ускорил работу БД в 2 раза за счёт оптимизации индексов и запросов."
+            - "Настроил мониторинг и алертинг (Prometheus + Grafana)."
+            - "Менторил двух junior-разработчиков."
+
+        - company: "Стартап «Идея»"
+          role: "Стажёр-разработчик"
+          date: "июнь 2022 – декабрь 2022"
+          points:
+            - "Участвовал в разработке REST API на Python (FastAPI)."
+            - "Покрыл тестами ключевые модули (pytest), поднял покрытие с 40% до 85%."
+
+    - title: "ПРОЕКТЫ"
+      type: "projects"
+      data:
+        - name: "Telegram-bot для учёта задач"
+          type: "Пет-проект (Python)"
+          link: "https://github.com/example/task-bot"
+          points:
+            - "Проектирование архитектуры и БД."
+            - "Интеграция с PostgreSQL и Redis."
+            - "Настройка CI/CD через GitHub Actions."
+
+        - name: "Мини-компилятор"
+          type: "Учебный проект (C++)"
+          link: "https://github.com/example/mini-compiler"
+          points:
+            - "Лексер и парсер для подмножества языка C."
+            - "Генерация байткода."
+
+    - title: "ПОРТФОЛИО"
+      type: "portfolio"
+      data: "https://github.com/example"
+
+    - title: "НАВЫКИ"
+      type: "skills"
+      data:
+        - category: "Go"
+          list: "gin, gorm, grpc"
+        - category: "Python"
+          list: "FastAPI, SQLAlchemy, pytest"
+        - category: "SQL"
+          list: "PostgreSQL, Redis"
+        - category: "Docker"
+          list: ""
+        - category: "Linux"
+          list: ""
+        - category: "SOLID"
+          list: ""
+
+    - title: "НАГРАДЫ"
+      type: "awards"
+      data:
+        - name: "Победитель олимпиады «Ломоносов»"
+          details: "1 место, 2022"
+        - name: "Хакатон HackTheCity"
+          details: |
+            1 место в треке Backend,
+            Приз зрительских симпатий
+        - name: "Стипендиат Правительства РФ"
+          details: "2022 – 2024"

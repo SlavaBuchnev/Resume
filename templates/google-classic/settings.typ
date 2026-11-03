@@ -1,4 +1,3 @@
-//Функция, которая применяет все настройки к документу
 #let apply-styles(doc) = {
   set page(
     paper: "a4",
@@ -9,13 +8,11 @@
   doc
 }
 
-// Функция для синих подчеркнутых ссылок
 #let clink(url, body) = link(
   url,
   underline(text(fill: rgb("#0055CC"), body))
 )
 
-// Функция для заголовков секций (синий текст)
 #let section-heading(title) = block(width: 100%, above: 1.2em, below: 0.5em)[
   #text(size: 11pt, weight: "bold", fill: rgb("#2B579A"))[#upper(title)]
 ]
