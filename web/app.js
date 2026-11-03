@@ -6,11 +6,6 @@ const LANG_MAP = {
     'fr': { flag: '🇫🇷', name: 'Français' }
 };
 
-const TEMPLATE_MAP = {
-    'google-classic': 'Classic Template',
-    'modern': 'Modern Template'
-};
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('resumes-container');
     const loading = document.getElementById('loading');
@@ -50,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const langKey = parts[1];
 
                     const langInfo = LANG_MAP[langKey] || { flag: '📄', name: langKey.toUpperCase() };
-                    const templateName = TEMPLATE_MAP[templateKey] || templateKey;
 
                     const a = document.createElement('a');
                     a.href = `./${user}/${pdfName}.pdf`;
@@ -61,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="flag">${langInfo.flag}</span>
                         <span class="btn-text">
                             <strong>${langInfo.name}</strong>
-                            <small>${templateName}</small>
+                            <small>${templateKey}</small>
                         </span>
                     `;
                     btnGroup.appendChild(a);
