@@ -10,31 +10,82 @@ ROOT = Path(__file__).parent.resolve()
 USERS_DIR = ROOT / "users"
 WEB_DIR = ROOT / "web"
 SITE_DIR = ROOT / "_site"
+MAIN_TYP = ROOT / "tools" / "main.typ"
+INSPECT_TYP = ROOT / "tools" / "list.typ"
+
+
+def run_typst(args):
+    """Запускает typst из корня репозитория."""
+    return subprocess.run(["typst"] + args, cwd=ROOT, capture_output=True, text=True)
+
+
+def inspect_person(yml_path):
+    """Читает файл пользователя и возвращает (templates, langs) или None.
+
+    YAML парсит сам Typst (tools/list.typ через `typst eval`) — в стандартной
+    библиотеке Python парсера нет, а внешние зависимости запрещены.
+    """
+    rel = yml_path.relative_to(ROOT).as_posix()
+    cmd = [
+        "eval", "query(<resume-config>)",
+        "--in", str(INSPECT_TYP.relative_to(ROOT)),
+        "--root", ".",
+        "--input", f"data=/{rel}",
+    ]
+    result = run_typst(cmd)
+    if result.returncode != 0:
+        print(f"❌ Ошибка валидации {rel}:")
+        print(result.stderr.strip())
+        return None
+    try:
+        info = json.loads(result.stdout)[0]["value"]
+        return info["templates"], info["langs"]
+    except (json.JSONDecodeError, IndexError, KeyError, TypeError):
+        print(f"❌ Не удалось разобрать ответ typst query для {rel}:")
+        print(result.stdout.strip())
+        return None
 
 
 def find_resumes():
-    """Ищет все YAML-файлы в users/."""
-    if not USERS_DIR.exists():
-        return []
+    """Ищет файлы users/*.yaml и раскладывает каждый на задачи сборки (шаблон × язык).
+
+    Возвращает (задачи, была_ли_ошибка_валидации).
+    """
     resumes = []
-    for user_dir in sorted(USERS_DIR.iterdir()):
-        if not user_dir.is_dir():
+    had_errors = False
+
+    if not USERS_DIR.exists():
+        return resumes, had_errors
+
+    for entry in sorted(USERS_DIR.iterdir()):
+        if entry.is_dir():
+            print(f"⚠️  {entry.relative_to(ROOT)}: старый формат не поддерживается. Нужен один файл users/{{фио}}.yaml")
             continue
-        for yaml_file in sorted(user_dir.glob("*.yaml")):
-            base = yaml_file.stem
-            if "_" not in base:
-                print(f"⚠️  {yaml_file}: имя должно быть {{template}}_{{lang}}.yaml")
-                continue
-            template, lang = base.rsplit("_", 1)
-            resumes.append({
-                "user": user_dir.name,
-                "template": template,
-                "lang": lang,
-                "base": base,
-                "yaml_path": str(yaml_file.relative_to(ROOT)),
-                "pdf_name": f"resume_{base}",
-            })
-    return resumes
+        if entry.suffix == ".yml":
+            print(f"⚠️  {entry.relative_to(ROOT)}: расширение .yml не поддерживается, переименуйте в .yaml")
+            continue
+        if not entry.is_file() or entry.suffix != ".yaml":
+            continue
+
+        info = inspect_person(entry)
+        if info is None:
+            had_errors = True
+            continue
+        templates, langs = info
+
+        rel = entry.relative_to(ROOT).as_posix()
+        for template in templates:
+            for lang in langs:
+                base = f"{template}_{lang}"
+                resumes.append({
+                    "user": entry.stem,
+                    "template": template,
+                    "lang": lang,
+                    "base": base,
+                    "yaml_path": rel,
+                    "pdf_name": f"resume_{base}",
+                })
+    return resumes, had_errors
 
 
 def compile_resume(resume, output_dir):
@@ -44,14 +95,15 @@ def compile_resume(resume, output_dir):
     out_pdf = user_dir / f"{resume['pdf_name']}.pdf"
 
     cmd = [
-        "typst", "compile", "main.typ",
+        "compile", str(MAIN_TYP.relative_to(ROOT)),
         str(out_pdf.relative_to(ROOT)),
         "--root", ".",
-        "--input", f"data={resume['yaml_path']}",
+        "--input", f"data=/{resume['yaml_path']}",
         "--input", f"template={resume['template']}",
+        "--input", f"lang={resume['lang']}",
     ]
     print(f"📄 {resume['user']} / {resume['base']}")
-    result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    result = run_typst(cmd)
 
     if result.returncode != 0:
         print(f"❌ Ошибка при сборке {resume['base']}:")
@@ -86,14 +138,14 @@ def copy_web(output_dir):
 
 
 def build(filters=None):
-    """Сборка. Если filters задан — собираем только указанные YAML."""
+    """Сборка. Если filters задан — собираем только указанные файлы users/*.yaml."""
     if SITE_DIR.exists():
         shutil.rmtree(SITE_DIR)
     SITE_DIR.mkdir(parents=True)
 
-    all_resumes = find_resumes()
+    all_resumes, scan_errors = find_resumes()
     if not all_resumes:
-        print("⚠️  Не найдено ни одного резюме в users/")
+        print("⚠️  Не найдено ни одного резюме в users/ (нужны файлы users/*.yaml)")
         sys.exit(1)
 
     if filters:
@@ -107,7 +159,7 @@ def build(filters=None):
     else:
         to_compile = all_resumes
 
-    ok = True
+    ok = not scan_errors
     for r in to_compile:
         if not compile_resume(r, SITE_DIR):
             ok = False
@@ -128,7 +180,7 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_build = sub.add_parser("build", help="Собрать резюме в _site/")
-    p_build.add_argument("--filter", nargs="+", help="Список YAML-файлов для сборки")
+    p_build.add_argument("--filter", nargs="+", help="Список файлов users/*.yaml для сборки")
 
     args = parser.parse_args()
 

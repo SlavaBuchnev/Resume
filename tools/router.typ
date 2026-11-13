@@ -1,5 +1,5 @@
-#import "templates/google-classic/template.typ": resume as google_classic_resume
-#import "templates/harvard/template.typ": resume as harvard_resume
+#import "../templates/google-classic/template.typ": resume as google_classic_resume
+#import "../templates/harvard/template.typ": resume as harvard_resume
 
 #let templates = (
   google-classic: google_classic_resume,

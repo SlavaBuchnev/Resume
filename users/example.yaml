@@ -1,31 +1,30 @@
-lang: ru
-name: "Иван Примеров"
-title: "BACKEND-РАЗРАБОТЧИК"
+# ==========================================
+# ПРИМЕР ЗАПОЛНЕНИЯ: пользователь example
+# Показывает все возможности формата:
+#   - несколько блоков разных типов (включая text)
+#   - два шаблона с разной раскладкой одних и тех же блоков
+# ==========================================
 
-contacts:
-  - "+7(999)000-00-00"
-  - "example@example.com"
-  - "github.com/example"
-  - "Москва"
+ru:
+  name: "Иван Примеров"
+  title: "BACKEND-РАЗРАБОТЧИК"
 
-sections:
-  center:
-    - title: "ОБО МНЕ"
-      type: "text"
+  contacts:
+    - "+7(999)000-00-00"
+    - "example@example.com"
+    - "tg: @example"
+    - "github.com/example"
+    - "Москва"
+
+  blocks:
+    about:
+      type: text
+      title: "ОБО МНЕ"
       data: "Backend-разработчик с опытом проектирования высоконагруженных систем (100K+ RPS). Интересуюсь распределёнными системами, алгоритмами и оптимизацией баз данных. Открыт к предложениям на позиции Senior/Lead Backend."
 
-    - title: "ОБРАЗОВАНИЕ"
-      type: "education"
-      data:
-        - institution: "МГУ им. М.В. Ломоносова"
-          date: "сентябрь 2020 – июль 2024"
-          degree: "Прикладная математика и информатика, Бакалавриат (красный диплом)"
-        - institution: "Курсы Яндекса"
-          date: "февраль 2023 – май 2023"
-          degree: "Алгоритмы и структуры данных"
-
-    - title: "ОПЫТ РАБОТЫ"
-      type: "experience"
+    experience:
+      type: experience
+      title: "ОПЫТ РАБОТЫ"
       data:
         - company: "ООО Ромашка"
           role: "Backend-разработчик"
@@ -43,8 +42,9 @@ sections:
             - "Участвовал в разработке REST API на Python (FastAPI)."
             - "Покрыл тестами ключевые модули (pytest), поднял покрытие с 40% до 85%."
 
-    - title: "ПРОЕКТЫ"
-      type: "projects"
+    projects:
+      type: projects
+      title: "ПРОЕКТЫ"
       data:
         - name: "Telegram-bot для учёта задач"
           type: "Пет-проект (Python)"
@@ -61,12 +61,25 @@ sections:
             - "Лексер и парсер для подмножества языка C."
             - "Генерация байткода."
 
-    - title: "ПОРТФОЛИО"
-      type: "portfolio"
+    education:
+      type: education
+      title: "ОБРАЗОВАНИЕ"
+      data:
+        - institution: "МГУ им. М.В. Ломоносова"
+          date: "сентябрь 2020 – июль 2024"
+          degree: "Прикладная математика и информатика, Бакалавриат (красный диплом)"
+        - institution: "Курсы Яндекса"
+          date: "февраль 2023 – май 2023"
+          degree: "Алгоритмы и структуры данных"
+
+    portfolio:
+      type: portfolio
+      title: "ПОРТФОЛИО"
       data: "https://github.com/example"
 
-    - title: "НАВЫКИ"
-      type: "skills"
+    skills:
+      type: skills
+      title: "НАВЫКИ"
       data:
         - category: "Go"
           list: "gin, gorm, grpc"
@@ -81,8 +94,9 @@ sections:
         - category: "SOLID"
           list: ""
 
-    - title: "НАГРАДЫ"
-      type: "awards"
+    awards:
+      type: awards
+      title: "НАГРАДЫ"
       data:
         - name: "Победитель олимпиады «Ломоносов»"
           details: "1 место, 2022"
@@ -92,3 +106,14 @@ sections:
             Приз зрительских симпатий
         - name: "Стипендиат Правительства РФ"
           details: "2022 – 2024"
+
+# Одни и те же блоки раскладываются по-разному в каждом шаблоне.
+# google-classic — две колонки, harvard — одна колонка на всю ширину.
+templates:
+  google-classic:
+    center: [about]
+    left: [experience, projects, education]
+    right: [portfolio, awards, skills]
+
+  harvard:
+    center: [about, education, experience, projects, portfolio, skills, awards]

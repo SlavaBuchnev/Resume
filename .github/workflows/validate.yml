@@ -29,19 +29,19 @@ jobs:
             typ:
               - '**/*.typ'
               - 'build.py'
-            yaml:
-              - 'users/**/*.yaml'
+            yml:
+              - 'users/*.yaml'
 
       - name: Build resumes
         run: |
           if [[ "${{ steps.changed-files.outputs.typ_any_changed }}" == "true" ]]; then
             echo "🔧 Изменены файлы шаблонов или скрипт сборки (.typ / build.py). Пересобираем ВСЁ."
             python build.py build
-          elif [[ "${{ steps.changed-files.outputs.yaml_any_changed }}" == "true" ]]; then
-            echo "📄 Изменены только YAML-файлы. Собираем только их."
-            python build.py build --filter ${{ steps.changed-files.outputs.yaml_all_changed_files }}
+          elif [[ "${{ steps.changed-files.outputs.yml_any_changed }}" == "true" ]]; then
+            echo "📄 Изменены только файлы резюме. Собираем только их."
+            python build.py build --filter ${{ steps.changed-files.outputs.yml_all_changed_files }}
           else
-            echo "ℹ️ Значимых файлов (yaml/typ) не изменено. Сборка не требуется."
+            echo "ℹ️ Значимых файлов (yml/typ) не изменено. Сборка не требуется."
           fi
 
       - name: Upload PDFs for review
@@ -60,7 +60,7 @@ jobs:
             ✅ **Сборка прошла успешно!**
             
             🔗 [Скачать собранные PDF-файлы](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            *(Если менялись YAML-файлы, здесь только они. Если менялись шаблоны — тут все PDF).*
+            *(Если менялись файлы резюме (.yaml), здесь только они. Если менялись шаблоны — тут все PDF).*
             
       - name: Comment on PR with error
         if: failure()
